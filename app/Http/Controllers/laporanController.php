@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\LaporanResource;
 use App\Imports\LaporansImport;
-use App\Models\laporan;
+use App\Models\Laporan;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
-class laporanController extends Controller
+class LaporanController extends Controller
 {
     public function index()
     {
@@ -16,7 +16,7 @@ class laporanController extends Controller
         if ($hari) {
             dd('hari');
         }
-        $laporans = laporan::get();
+        $laporans = Laporan::get();
         return view('pages.laporan.index', compact('laporans'));
     }
 
@@ -27,28 +27,28 @@ class laporanController extends Controller
         $tahun = request('t') == "Tahun" ? false : request('t');
 
         if ($hari && !$bulan & !$tahun) {
-            $laporans =  laporan::whereDay('tanggal', $hari)->get();
+            $laporans =  Laporan::whereDay('tanggal', $hari)->get();
             $title = 'Laporan penjualan tanggal ' . $hari;
         } elseif ($hari && $bulan && !$tahun) {
-            $laporans =  laporan::whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan)->get();
+            $laporans =  Laporan::whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan)->get();
             $title = 'Laporan penjualan tanggal ' . $hari . ' bulan ' . date("F", mktime(0, 0, 0, $bulan, 10));
         } elseif ($hari && $bulan && $tahun) {
-            $laporans =  laporan::whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
+            $laporans =  Laporan::whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
             $title = 'Laporan penjualan tanggal ' . $hari . ' bulan ' . date("F", mktime(0, 0, 0, $bulan, 10)) . ' tahun ' . $tahun;
         } elseif (!$hari && $bulan && !$tahun) {
-            $laporans =  laporan::whereMonth('tanggal', $bulan)->get();
+            $laporans =  Laporan::whereMonth('tanggal', $bulan)->get();
             $title = 'Laporan penjualan bulan ' . date("F", mktime(0, 0, 0, $bulan, 10));
         } elseif (!$hari && !$bulan && $tahun) {
-            $laporans =  laporan::whereYear('tanggal', $tahun)->get();
+            $laporans =  Laporan::whereYear('tanggal', $tahun)->get();
             $title = 'Laporan penjualan tahun ' . $tahun;
         } elseif (!$hari && $bulan && $tahun) {
-            $laporans =  laporan::whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
+            $laporans =  Laporan::whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
             $title = 'Laporan penjualan bulan ' . date("F", mktime(0, 0, 0, $bulan, 10)) . ' tahun ' . $tahun;
         } elseif ($hari && !$bulan && $tahun) {
-            $laporans =  laporan::whereDay('tanggal', $hari)->whereYear('tanggal', $tahun)->get();
+            $laporans =  Laporan::whereDay('tanggal', $hari)->whereYear('tanggal', $tahun)->get();
             $title = 'Laporan penjualan hari ' . $hari . ' tahun ' . $tahun;
         } else {
-            $laporans =  laporan::get();
+            $laporans =  Laporan::get();
             $title = 'Laporan Semua Penjualan';
         }
 
@@ -68,7 +68,7 @@ class laporanController extends Controller
 
     public function edit(string $id)
     {
-        $laporan = laporan::find($id);
+        $laporan = Laporan::find($id);
         return view('pages.laporan.edit', [
             'laporan' => $laporan
         ]);
@@ -76,14 +76,14 @@ class laporanController extends Controller
 
     public function update(Request $request, string $id)
     {
-        $laporan = laporan::find($id);
+        $laporan = Laporan::find($id);
         $laporan->update($request->all());
         return redirect(route('home'));
     }
 
     public function destroy(string $id)
     {
-        $laporan = laporan::find($id);
+        $laporan = Laporan::find($id);
         $laporan->delete();
         return back();
     }

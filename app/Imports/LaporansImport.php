@@ -2,7 +2,6 @@
 
 namespace App\Imports;
 
-use App\Models\Laporan;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Facades\Excel;
@@ -20,7 +19,7 @@ class LaporansImport implements ToModel, WithStartRow
     }
     public function model(array $row)
     {
-        return new Laporan([
+        return new \App\Models\Laporan([
             'tanggal' => date('Y-m-d', strtotime(str_replace('/', '-', $row[1]))) . ' ' . $row[2],
             'waktu' => $row[2],
             'username' => $row[3],

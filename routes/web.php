@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\laporanController;
+use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,17 +18,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('laporan/import', [laporanController::class, 'import'])->name('laporan');
-Route::get('laporan', [laporanController::class, 'index'])->name('laporan.index');
-Route::get('laporan-dataTable', [laporanController::class, 'dataTable'])->name('laporan.dataTable');
-Route::get('laporan/{id}', [laporanController::class, 'edit'])->name('laporan.edit');
-Route::put('laporan/{id}', [laporanController::class, 'update']);
-Route::delete('laporan/{id}', [laporanController::class, 'destroy'])->name('laporan.destroy');
+Route::post('laporan/import', [LaporanController::class, 'import'])->name('laporan');
+Route::get('laporan', [LaporanController::class, 'index'])->name('laporan.index');
+Route::get('laporan-dataTable', [LaporanController::class, 'dataTable'])->name('laporan.dataTable');
+Route::get('laporan/{id}', [LaporanController::class, 'edit'])->name('laporan.edit');
+Route::put('laporan/{id}', [LaporanController::class, 'update']);
+Route::delete('laporan/{id}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

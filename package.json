@@ -15,5 +15,9 @@
         "react-dom": "^18.2.0",
         "sass": "^1.56.1",
         "vite": "^4.0.0"
+    },
+    "dependencies": {
+        "react-data-table-component": "^7.5.3",
+        "styled-components": "^6.0.0-rc.1"
     }
 }

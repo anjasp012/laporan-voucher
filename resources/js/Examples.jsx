@@ -1,24 +1,18 @@
 import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
 import ReactDOM from "react-dom";
 
 function Example(props) {
     const [laporans, setLaporans] = useState([]);
     const [total, setTotal] = useState('');
-    const [links, setLinks] = useState([]);
     const [url, setUrl] = useState(props.endpoint);
     const [hari, setHari] = useState();
     const [bulan, setBulan] = useState();
     const [tahun, setTahun] = useState();
     const [title, setTitle] = useState();
-    const [paginate, setPaginate] = useState('10');
-    const [live, setLive] = useState('');
     const requestFilter = {
         h: hari,
         b: bulan,
         t: tahun,
-        paginate: paginate,
-        live: live
     };
 
     const haris = [];
@@ -36,7 +30,6 @@ function Example(props) {
             let { data } = await axios.get(url, { params: requestFilter });
             console.log(data);
             setLaporans(data.data);
-            data.meta ? setLinks(data.meta.links) : setLinks([]);
             setTotal(data.total);
             setTitle(data.title);
         } catch (error) {
@@ -67,45 +60,7 @@ function Example(props) {
 
     useEffect(() => {
         getLaporans();
-    }, [url, paginate, live]);
-
-    const columns = [
-        {
-            name: '#',
-            selector: row => row.id,
-            sortable: true,
-        },
-        {
-            name: 'Tanggal',
-            selector: row => row.tanggal,
-            sortable: true,
-        },
-        {
-            name: 'waktu',
-            selector: row => row.waktu,
-            sortable: true,
-        },
-        {
-            name: 'username',
-            selector: row => row.username,
-            sortable: true,
-        },
-        {
-            name: 'profil',
-            selector: row => row.profil,
-            sortable: true,
-        },
-        {
-            name: 'komentar',
-            selector: row => row.komentar,
-            sortable: true,
-        },
-        {
-            name: 'harga',
-            selector: row => row.harga,
-            sortable: true,
-        },
-    ];
+    }, [url]);
 
     return (
         <div className="container">
@@ -167,49 +122,41 @@ function Example(props) {
                                     </form>
                                 </div>
                             </div>
-                            <div className="d-flex justify-content-between">
-                                <div>
-                                    <select className="form-select" name="paginate" id="paginate" onChange={(e) => setPaginate(e.target.value)}>
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <input type="search" className="form-control" onChange={(e) => setLive(e.target.value)} name="" id="" />
-                                </div>
+                            <div className="table-responsive" style={{ maxHeight: '75vh' }}>
+                                <table className="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th colSpan={5}>{title}</th>
+                                            <th colSpan={1} className="text-end">Total : </th>
+                                            <td colSpan={2}>Rp.{total}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Tanggal</th>
+                                            <th>Waktu</th>
+                                            <th>Username</th>
+                                            <th>Profil</th>
+                                            <th>Komentar</th>
+                                            <th>Harga</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {laporans.map((laporan, key) => {
+                                            return (
+                                                <tr key={laporan.id}>
+                                                    <td>{key + 1}</td>
+                                                    <td>{laporan.tanggal}</td>
+                                                    <td>{laporan.waktu}</td>
+                                                    <td>{laporan.username}</td>
+                                                    <td>{laporan.profil}</td>
+                                                    <td>{laporan.komentar}</td>
+                                                    <td>{laporan.harga}</td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
                             </div>
-                            <div className="table-responsive mt-3" style={{ maxHeight: '75vh' }}>
-                            <table className="table table-bordered mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>{title}</th>
-                                        <th className="text-end">Total : </th>
-                                        <td width={'14%'}>{total}</td>
-                                    </tr>
-                                </thead>
-                            </table>
-                            <DataTable columns={columns}
-                                    data={laporans}/>
-                                    </div>
-                                    <nav className="mt-3" aria-label="...">
-                                        <ul class="pagination">
-                                            {links.length
-                                                ? links.map((link, key) => {
-                                                    return (
-                                                        <li key={key} class={`page-item ${link.active ? "active" : ""}`}>
-                                                            <a
-                                                                class="page-link"
-                                                                href="#"
-                                                                onClick={(e) => setUrl(link.url)}
-                                                                dangerouslySetInnerHTML={{ __html: link.label }}
-                                                            />
-                                                        </li>
-                                                    );
-                                                })
-                                                : ""}
-                                        </ul>
-                                    </nav>
                         </div>
                     </div>
                 </div>

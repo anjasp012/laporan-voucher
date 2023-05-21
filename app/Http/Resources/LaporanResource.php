@@ -22,7 +22,6 @@ class LaporanResource extends JsonResource
             'profil' => $this->profil,
             'komentar' => $this->komentar,
             'harga' => $this->harga,
-            'total' => $this->harga,
         ];
     }
 }

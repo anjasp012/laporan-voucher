@@ -22,76 +22,124 @@ class LaporanController extends Controller
         $tahun = request('t') == "Tahun" ? false : request('t');
         $paginate = request('paginate') ?? '10';
         $live = request('live');
-        $column = [
+        $columns = [
             'username',
-            'profile',
+            'profil',
             'komentar',
             'harga'
         ];
 
         if ($hari && !$bulan & !$tahun) {
             if ($live != '') {
-                $total =  Laporan::query()->whereDay('tanggal', $hari)->where('username', 'like', '%' . $live . '%')->orWhere('profil', 'like', '%' . $live . '%')->orWhere('komentar', 'like', '%' . $live . '%')->orWhere('harga', 'like', '%' . $live . '%')->get();
-                $laporans =  Laporan::query()->whereDay('tanggal', $hari)->where('username', 'like', '%' . $live . '%')->orWhere('profil', 'like', '%' . $live . '%')->orWhere('komentar', 'like', '%' . $live . '%')->orWhere('harga', 'like', '%' . $live . '%')->paginate($paginate)->withQueryString();
+                $query = Laporan::query();
+                foreach ($columns as $column) {
+                    $query->orWhere($column, 'LIKE', '%' . $live . '%')->whereDay('tanggal', $hari);
+                }
+                $total =  $query->get();
+                $laporans = $query->paginate($paginate)->withQueryString();
+            } else {
+                $query = Laporan::query()->whereDay('tanggal', $hari);
+                $total =  $query->get();
+                $laporans = $query->paginate($paginate)->withQueryString();
             }
-            $total =  Laporan::query()->whereDay('tanggal', $hari)->get();
-            $laporans =  Laporan::query()->whereDay('tanggal', $hari)->paginate($paginate)->withQueryString();
             $title = 'Laporan penjualan tanggal ' . $hari;
         } elseif ($hari && $bulan && !$tahun) {
             if ($live != '') {
-                $total =  Laporan::query()->whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan)->where('username', 'like', '%' . $live . '%')->orWhere('profil', 'like', '%' . $live . '%')->orWhere('komentar', 'like', '%' . $live . '%')->orWhere('harga', 'like', '%' . $live . '%')->get();
-                $laporans =  Laporan::query()->whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan)->where('username', 'like', '%' . $live . '%')->orWhere('profil', 'like', '%' . $live . '%')->orWhere('komentar', 'like', '%' . $live . '%')->orWhere('harga', 'like', '%' . $live . '%')->paginate($paginate)->withQueryString();
+                $query = Laporan::query();
+                foreach ($columns as $column) {
+                    $query->orWhere($column, 'LIKE', '%' . $live . '%')->whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan);
+                }
+                $total =  $query->get();
+                $laporans = $query->paginate($paginate)->withQueryString();
+            } else {
+                $query = Laporan::query()->whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan);
+                $total =  $query->get();
+                $laporans = $query->paginate($paginate)->withQueryString();
             }
-            $total =  Laporan::query()->whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan)->get();
-            $laporans =  Laporan::query()->whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan)->paginate($paginate)->withQueryString();
             $title = 'Laporan penjualan tanggal ' . $hari . ' bulan ' . date("F", mktime(0, 0, 0, $bulan, 10));
         } elseif ($hari && $bulan && $tahun) {
             if ($live != '') {
-                $total =  Laporan::query()->whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->where('username', 'like', '%' . $live . '%')->orWhere('profil', 'like', '%' . $live . '%')->orWhere('komentar', 'like', '%' . $live . '%')->orWhere('harga', 'like', '%' . $live . '%')->get();
-                $laporans =  Laporan::query()->whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->where('username', 'like', '%' . $live . '%')->orWhere('profil', 'like', '%' . $live . '%')->orWhere('komentar', 'like', '%' . $live . '%')->orWhere('harga', 'like', '%' . $live . '%')->paginate($paginate)->withQueryString();
+                $query = Laporan::query();
+                foreach ($columns as $column) {
+                    $query->orWhere($column, 'LIKE', '%' . $live . '%')->whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
+                }
+                $total =  $query->get();
+                $laporans = $query->paginate($paginate)->withQueryString();
+            } else {
+                $query = Laporan::query()->whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
+                $total =  $query->get();
+                $laporans = $query->paginate($paginate)->withQueryString();
             }
-            $total =  Laporan::query()->whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
-            $laporans =  Laporan::query()->whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->paginate($paginate)->withQueryString();
             $title = 'Laporan penjualan tanggal ' . $hari . ' bulan ' . date("F", mktime(0, 0, 0, $bulan, 10)) . ' tahun ' . $tahun;
         } elseif (!$hari && $bulan && !$tahun) {
             if ($live != '') {
-                $total =  Laporan::query()->whereMonth('tanggal', $bulan)->where('username', 'like', '%' . $live . '%')->orWhere('profil', 'like', '%' . $live . '%')->orWhere('komentar', 'like', '%' . $live . '%')->orWhere('harga', 'like', '%' . $live . '%')->get();
-                $laporans =  Laporan::query()->whereMonth('tanggal', $bulan)->where('username', 'like', '%' . $live . '%')->orWhere('profil', 'like', '%' . $live . '%')->orWhere('komentar', 'like', '%' . $live . '%')->orWhere('harga', 'like', '%' . $live . '%')->paginate($paginate)->withQueryString();
+                $query = Laporan::query();
+                foreach ($columns as $column) {
+                    $query->orWhere($column, 'LIKE', '%' . $live . '%')->whereMonth('tanggal', $bulan);
+                }
+                $total =  $query->get();
+                $laporans = $query->paginate($paginate)->withQueryString();
+            } else {
+                $query = Laporan::query()->whereMonth('tanggal', $bulan);
+                $total =  $query->get();
+                $laporans = $query->paginate($paginate)->withQueryString();
             }
-            $total =  Laporan::query()->whereMonth('tanggal', $bulan)->get();
-            $laporans =  Laporan::query()->whereMonth('tanggal', $bulan)->paginate($paginate)->withQueryString();
             $title = 'Laporan penjualan bulan ' . date("F", mktime(0, 0, 0, $bulan, 10));
         } elseif (!$hari && !$bulan && $tahun) {
             if ($live != '') {
-                $total =  Laporan::query()->whereYear('tanggal', $tahun)->where('username', 'like', '%' . $live . '%')->orWhere('profil', 'like', '%' . $live . '%')->orWhere('komentar', 'like', '%' . $live . '%')->orWhere('harga', 'like', '%' . $live . '%')->get();
-                $laporans =  Laporan::query()->whereYear('tanggal', $tahun)->where('username', 'like', '%' . $live . '%')->orWhere('profil', 'like', '%' . $live . '%')->orWhere('komentar', 'like', '%' . $live . '%')->orWhere('harga', 'like', '%' . $live . '%')->paginate($paginate)->withQueryString();
+                $query = Laporan::query();
+                foreach ($columns as $column) {
+                    $query->orWhere($column, 'LIKE', '%' . $live . '%')->whereYear('tanggal', $tahun);
+                }
+                $total =  $query->get();
+                $laporans = $query->paginate($paginate)->withQueryString();
+            } else {
+                $query = Laporan::query()->whereYear('tanggal', $tahun);
+                $total =  $query->get();
+                $laporans = $query->paginate($paginate)->withQueryString();
             }
-            $total =  Laporan::query()->whereYear('tanggal', $tahun)->get();
-            $laporans =  Laporan::query()->whereYear('tanggal', $tahun)->paginate($paginate)->withQueryString();
             $title = 'Laporan penjualan tahun ' . $tahun;
         } elseif (!$hari && $bulan && $tahun) {
             if ($live != '') {
-                $total =  Laporan::query()->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->where('username', 'like', '%' . $live . '%')->orWhere('profil', 'like', '%' . $live . '%')->orWhere('komentar', 'like', '%' . $live . '%')->orWhere('harga', 'like', '%' . $live . '%')->get();
-                $laporans =  Laporan::query()->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->where('username', 'like', '%' . $live . '%')->orWhere('profil', 'like', '%' . $live . '%')->orWhere('komentar', 'like', '%' . $live . '%')->orWhere('harga', 'like', '%' . $live . '%')->paginate($paginate)->withQueryString();
+                $query = Laporan::query();
+                foreach ($columns as $column) {
+                    $query->orWhere($column, 'LIKE', '%' . $live . '%')->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
+                }
+                $total =  $query->get();
+                $laporans = $query->paginate($paginate)->withQueryString();
+            } else {
+                $query = Laporan::query()->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
+                $total =  $query->get();
+                $laporans = $query->paginate($paginate)->withQueryString();
             }
-            $total =  Laporan::query()->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
-            $laporans =  Laporan::query()->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->paginate($paginate)->withQueryString();
             $title = 'Laporan penjualan bulan ' . date("F", mktime(0, 0, 0, $bulan, 10)) . ' tahun ' . $tahun;
         } elseif ($hari && !$bulan && $tahun) {
             if ($live != '') {
-                $laporans =  Laporan::query()->whereDay('tanggal', $hari)->whereYear('tanggal', $tahun)->where('username', 'like', '%' . $live . '%')->orWhere('profil', 'like', '%' . $live . '%')->orWhere('komentar', 'like', '%' . $live . '%')->orWhere('harga', 'like', '%' . $live . '%')->get();
-                $laporans =  Laporan::query()->whereDay('tanggal', $hari)->whereYear('tanggal', $tahun)->where('username', 'like', '%' . $live . '%')->orWhere('profil', 'like', '%' . $live . '%')->orWhere('komentar', 'like', '%' . $live . '%')->orWhere('harga', 'like', '%' . $live . '%')->paginate($paginate)->withQueryString();
+                $query = Laporan::query();
+                foreach ($columns as $column) {
+                    $query->orWhere($column, 'LIKE', '%' . $live . '%')->whereDay('tanggal', $hari)->whereYear('tanggal', $tahun);
+                }
+                $total =  $query->get();
+                $laporans = $query->paginate($paginate)->withQueryString();
+            } else {
+                $query = Laporan::query()->whereDay('tanggal', $hari)->whereYear('tanggal', $tahun);
+                $total =  $query->get();
+                $laporans = $query->paginate($paginate)->withQueryString();
             }
-            $total =  Laporan::query()->whereDay('tanggal', $hari)->whereYear('tanggal', $tahun)->get();
-            $laporans =  Laporan::query()->whereDay('tanggal', $hari)->whereYear('tanggal', $tahun)->paginate($paginate)->withQueryString();
             $title = 'Laporan penjualan hari ' . $hari . ' tahun ' . $tahun;
         } else {
             if ($live != '') {
-                $total =  Laporan::query()->where('username', 'like', '%' . $live . '%')->orWhere('profil', 'like', '%' . $live . '%')->orWhere('komentar', 'like', '%' . $live . '%')->orWhere('harga', 'like', '%' . $live . '%')->get();
-                $laporans =  Laporan::query()->where('username', 'like', '%' . $live . '%')->orWhere('profil', 'like', '%' . $live . '%')->orWhere('komentar', 'like', '%' . $live . '%')->orWhere('harga', 'like', '%' . $live . '%')->paginate($paginate);
+                $query = Laporan::query();
+                foreach ($columns as $column) {
+                    $query->orWhere($column, 'LIKE', '%' . $live . '%');
+                }
+                $total =  $query->get();
+                $laporans = $query->paginate($paginate)->withQueryString();
+            } else {
+                $query = Laporan::query();
+                $total =  $query->get();
+                $laporans = $query->paginate($paginate)->withQueryString();
             }
-            $total =  Laporan::query()->where('username', 'like', '%' . $live . '%')->get();
-            $laporans =  Laporan::query()->where('username', 'like', '%' . $live . '%')->paginate($paginate);
             $title = 'Laporan Semua Penjualan';
         }
 

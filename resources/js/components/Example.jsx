@@ -67,12 +67,14 @@ function Example(props) {
 
     useEffect(() => {
         getLaporans();
+        console.log(paginate);
     }, [url, paginate, live]);
 
     const columns = [
         {
             name: '#',
-            selector: row => row.id,
+            // value: 'sa',
+            selector: (row, index) => index + 1,
             sortable: true,
         },
         {

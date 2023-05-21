@@ -23,6 +23,8 @@ class LaporanController extends Controller
         $paginate = request('paginate') ?? '10';
         $live = request('live');
         $columns = [
+            'tanggal',
+            'waktu',
             'username',
             'profil',
             'komentar',

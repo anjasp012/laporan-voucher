@@ -12,12 +12,7 @@ class LaporanController extends Controller
 {
     public function index()
     {
-        $hari = request('day');
-        if ($hari) {
-            dd('hari');
-        }
-        $laporans = Laporan::get();
-        return view('pages.laporan.index', compact('laporans'));
+        return view('pages.laporan.index');
     }
 
     public function dataTable()

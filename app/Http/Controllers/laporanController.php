@@ -146,6 +146,7 @@ class LaporanController extends Controller
         }
 
         $jumlah = $total->count();
+        // dd($jumlah);
         $totals =  number_format($total->sum('harga'), '0', '.', '.');
         return LaporanResource::collection($laporans)->additional([
             'total' => $totals,

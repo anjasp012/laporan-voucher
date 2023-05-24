@@ -39,7 +39,7 @@ function Example(props) {
             setLaporans(data.data);
             data.meta ? setLinks(data.meta.links) : setLinks([]);
             setTotal(data.total);
-            setTJumlah(data.jumlah);
+            setJumlah(data.jumlah);
             setTitle(data.title);
         } catch (error) {
             console.log(error.message);

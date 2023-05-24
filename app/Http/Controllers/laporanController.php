@@ -35,7 +35,7 @@ class LaporanController extends Controller
             if ($live != '') {
                 $query = Laporan::query();
                 foreach ($columns as $column) {
-                    $query->orWhere($column, 'LIKE', '%' . $live . '%')->whereDay('tanggal', $hari);
+                    $query->orWhere($column, 'LIKE', $live . '%')->whereDay('tanggal', $hari);
                 }
                 $total =  $query->get();
                 $laporans = $query->paginate($paginate)->withQueryString();
@@ -49,7 +49,7 @@ class LaporanController extends Controller
             if ($live != '') {
                 $query = Laporan::query();
                 foreach ($columns as $column) {
-                    $query->orWhere($column, 'LIKE', '%' . $live . '%')->whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan);
+                    $query->orWhere($column, 'LIKE', $live . '%')->whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan);
                 }
                 $total =  $query->get();
                 $laporans = $query->paginate($paginate)->withQueryString();
@@ -63,7 +63,7 @@ class LaporanController extends Controller
             if ($live != '') {
                 $query = Laporan::query();
                 foreach ($columns as $column) {
-                    $query->orWhere($column, 'LIKE', '%' . $live . '%')->whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
+                    $query->orWhere($column, 'LIKE', $live . '%')->whereDay('tanggal', $hari)->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
                 }
                 $total =  $query->get();
                 $laporans = $query->paginate($paginate)->withQueryString();
@@ -77,7 +77,7 @@ class LaporanController extends Controller
             if ($live != '') {
                 $query = Laporan::query();
                 foreach ($columns as $column) {
-                    $query->orWhere($column, 'LIKE', '%' . $live . '%')->whereMonth('tanggal', $bulan);
+                    $query->orWhere($column, 'LIKE', $live . '%')->whereMonth('tanggal', $bulan);
                 }
                 $total =  $query->get();
                 $laporans = $query->paginate($paginate)->withQueryString();
@@ -91,7 +91,7 @@ class LaporanController extends Controller
             if ($live != '') {
                 $query = Laporan::query();
                 foreach ($columns as $column) {
-                    $query->orWhere($column, 'LIKE', '%' . $live . '%')->whereYear('tanggal', $tahun);
+                    $query->orWhere($column, 'LIKE', $live . '%')->whereYear('tanggal', $tahun);
                 }
                 $total =  $query->get();
                 $laporans = $query->paginate($paginate)->withQueryString();
@@ -105,7 +105,7 @@ class LaporanController extends Controller
             if ($live != '') {
                 $query = Laporan::query();
                 foreach ($columns as $column) {
-                    $query->orWhere($column, 'LIKE', '%' . $live . '%')->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
+                    $query->orWhere($column, 'LIKE', $live . '%')->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
                 }
                 $total =  $query->get();
                 $laporans = $query->paginate($paginate)->withQueryString();
@@ -119,7 +119,7 @@ class LaporanController extends Controller
             if ($live != '') {
                 $query = Laporan::query();
                 foreach ($columns as $column) {
-                    $query->orWhere($column, 'LIKE', '%' . $live . '%')->whereDay('tanggal', $hari)->whereYear('tanggal', $tahun);
+                    $query->orWhere($column, 'LIKE', $live . '%')->whereDay('tanggal', $hari)->whereYear('tanggal', $tahun);
                 }
                 $total =  $query->get();
                 $laporans = $query->paginate($paginate)->withQueryString();
@@ -133,7 +133,7 @@ class LaporanController extends Controller
             if ($live != '') {
                 $query = Laporan::query();
                 foreach ($columns as $column) {
-                    $query->orWhere($column, 'LIKE', '%' . $live . '%');
+                    $query->orWhere($column, 'LIKE', $live . '%');
                 }
                 $total =  $query->get();
                 $laporans = $query->paginate($paginate)->withQueryString();

@@ -5,6 +5,7 @@ import ReactDOM from "react-dom";
 function Example(props) {
     const [laporans, setLaporans] = useState([]);
     const [total, setTotal] = useState('');
+    const [jumlah, setJumlah] = useState('');
     const [links, setLinks] = useState([]);
     const [url, setUrl] = useState(props.endpoint);
     const [hari, setHari] = useState();
@@ -38,6 +39,7 @@ function Example(props) {
             setLaporans(data.data);
             data.meta ? setLinks(data.meta.links) : setLinks([]);
             setTotal(data.total);
+            setTJumlah(data.jumlah);
             setTitle(data.title);
         } catch (error) {
             console.log(error.message);
@@ -194,6 +196,7 @@ function Example(props) {
                             <DataTable columns={columns}
                                     data={laporans}/>
                                     </div>
+                                    <div>Total Penjualan : {jumlah}</div>
                                     <nav className="mt-3" aria-label="...">
                                         <ul class="pagination">
                                             {links.length

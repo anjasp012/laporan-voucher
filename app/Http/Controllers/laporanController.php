@@ -145,10 +145,12 @@ class LaporanController extends Controller
             $title = 'Laporan Semua Penjualan';
         }
 
+        $jumlah = $total->count();
         $totals =  number_format($total->sum('harga'), '0', '.', '.');
         return LaporanResource::collection($laporans)->additional([
             'total' => $totals,
             'title' => $title,
+            'jumlah' => $jumlah,
         ]);
     }
 
